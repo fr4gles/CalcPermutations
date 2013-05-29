@@ -1,104 +1,73 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
- *
+ * Główna klasa programu
  * @author Michal
  */
 public class Main
 {
-    private static int[] v = new int[100];
-    private static int n;
-    private static int cnt;
-    private static char []str;
-    //private static String str;
+    /**
+     * zmienna obpowiadająca za wypis testowy
+     */
+    public static Boolean Test = Boolean.FALSE;
     
+    /**
+     * wczytywanie danych z pliku
+     * @param fileToRead
+     * @return 
+     */
+    private static List<Integer> WczytajPlik(String fileToRead)
+    {
+        List<Integer> permutacje = new ArrayList<>();
+        File file = new File(fileToRead); // użycie pliku wejsciowego do odczytu danych
+        try
+        {
+            Scanner sc = new Scanner(file).useDelimiter("\\D+"); // pobieranie tylko liczb ...
+            while (sc.hasNext())
+            {
+                Integer p = sc.nextInt();
+
+                permutacje.add(p);
+                
+                if(Main.Test)
+                    System.out.println(p);
+            }
+        }
+        catch (FileNotFoundException ex)
+        {
+            System.err.println("BLAD Z PARSOWANIEM PLIKU WEJSCIOWEGO czy PLIK istnieje??? -> " + ex.getMessage());
+        }
+        catch (NoSuchElementException ex)
+        {
+            if (Main.Test)
+            {
+                System.err.println("BLAD ZLY FORMAT PERMUTACJI -> " + ex.getMessage());
+            }
+        }
+        return permutacje;
+    }
+    
+    /**
+     * main
+     * @param args argumenty
+     */
     public static void main(String[] args)
     {
-        str = "1234567".toCharArray();
-
-        //n = strlen(str);
-        n = str.length;
-        bkt(1);
-
-        System.out.printf("%d \n", --cnt);
-    }
-
-    static void init(int k)
-    {
-        v[k] = -1;
-    }
-
-    static boolean solutionReached( int k ) 
-    {
-        if (k == n + 1)
-            return true;
-        return false;
-    }
-
-    static void printSolution( int k ) 
-    {
-        for (int i = 1; i < k; i++)
+        if (args.length<1)
         {
-            System.out.printf("%c ", str[v[i]]);
+            System.err.println("Podaj conajmniej 1 argument");
+            return;
         }
-
-        System.out.printf("\n");
-
-        cnt++;
+            
+        Calc calc = new Calc(WczytajPlik(args[0]));
+        
+        System.out.println("Indeks : "+calc.ObliczIndeks());
     }
-
-    static boolean hasSuccesor( int k ) 
-    {
-        if(v[k] < n - 1)
-        {
-            v[k]++;
-            return true;
-        }
-        return false;
-    }
-
-    static boolean isValid( int k ) 
-    {
-        for (int i = 1; i < k; i++)
-        {
-            if (v[i] == v[k])
-            {
-                return false;
-            }
-        }
-
-        if (k == n)
-        {
-            //char *cuv = (char *) malloc(n * sizeof(char));
-            char []cuv = new char[n];
-
-            for (int i = 0; i < n; i++)
-                cuv[i] = str[v[i + 1]];
-
-            if (cuv.toString().compareTo(str.toString())> 0)
-            {
-                return true;
-            }
-            else
-                return false;
-        }
-
-        return true;
-    }
-
-    static void bkt(int k)
-    {
-        if(solutionReached(k))
-            printSolution(k);
-        else
-        {
-            init(k);
-            while(hasSuccesor(k))
-                if(isValid(k))
-                    bkt(k + 1);
-        }
-    }
+    
 }
