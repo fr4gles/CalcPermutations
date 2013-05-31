@@ -30,16 +30,17 @@ public class Calc
     public int ObliczIndeks() 
     {
         // wykorzystanie systemu pozycyjnjnego do obliczenia wartości indeksu
-        // wzor na index = x1*(n-1)!+x2*[n-2]!+....xi*[0]!
-        // obliczenia wykonywane są od końca
+        // obliczamy indeks ze wzoru  x1*(n-1)! + x2*[n-2]! + .... + xi*[0]!
         int indeks = 1;
         
-        int pozycja = 2; // pozycja 1 zawsze  = 0
+        int pozycja = 2; // bo pozycja 1 zawsze = 0
         
         int silnia = 1;
+        
+        // obliczenia wykonywane są od końca
         for (int i = permutacje.size() - 2; i >= 0; --i) 
         {
-            // dla elementów permutacji obliczam licznik następników (x1...xi)
+            // dla elementów permutacji obliczam x1 ... xi
             int nastepny = 0;
             for (int j = i + 1; j < permutacje.size(); ++j) 
                 if (permutacje.get(i) > permutacje.get(j)) 

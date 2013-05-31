@@ -61,7 +61,7 @@ public class Main
     {
         if (args.length<1)
         {
-            System.err.println("Podaj conajmniej 1 argument");
+            System.err.println("Podaj co najmniej 1 argument");
             return;
         }
             
